@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { GroceryList } from "./GroceryList"
 import { PantryList } from "./PantryList"
+import { CheckOffPopup } from "./CheckOffPopup"
 
 export default function App() {
   const [newGrocItem, setNewGrocItem] = useState("")
@@ -102,7 +103,6 @@ export default function App() {
       <button onClick={e => handleConfirmPurchase(grocList)}>Confirm</button>
 
       <PantryList handlePantrySubmit={handlePantrySubmit} pantryList={pantryList} newPantryItem={newPantryItem} setNewPantryItem={setNewPantryItem} handleMoveToGrocList={handleMoveToGrocList} handleDelete={handleDelete}/>
-      
       
     </>
   )
