@@ -1,7 +1,7 @@
 
-export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, newPantryItem }) {
+export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, newPantryItem, handleMoveToGrocList, handleDelete }) {
     
-
+    
 
     return (
         <>
@@ -21,6 +21,8 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
         {pantryList.map(pantryItem => {
             return <li key={pantryItem.id}>
             <label>{pantryItem.title}</label>
+            <button onClick={() => handleMoveToGrocList(pantryItem.id)}>Add to List</button>
+            <button onClick={() => handleDelete(pantryItem.id, "pantry")}>Delete</button>
         </li>
         })}
         

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, grocList, handleChecked }) {
+export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, grocList, handleChecked, handleDelete }) {
 
     useEffect(() => {
       }, [grocList]);
@@ -25,6 +25,7 @@ export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, gro
         {grocList.map(grocItem => {
             return <li key={grocItem.id}>
             <label><input type="checkbox" onClick={e => handleChecked(grocItem.id)}/>{grocItem.title}</label>
+            <button onClick={() =>handleDelete(grocItem.id, "groc")}>Delete</button>
         </li>
         })}
         
