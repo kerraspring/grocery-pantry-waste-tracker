@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { GroceryList } from "./GroceryList"
 import { PantryList } from "./PantryList"
-import { CheckOffPopup } from "./CheckOffPopup"
 
 export default function App() {
   const [newGrocItem, setNewGrocItem] = useState("")
@@ -9,6 +8,7 @@ export default function App() {
 
   const [newPantryItem, setNewPantryItem] = useState("")
   const [pantryList, setPantryList] = useState([])
+
 
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function App() {
 
         setGrocList(currentGrocList => {
         return[
-            ...currentGrocList, {id: crypto.randomUUID(), title: newGrocItem, checked: false},
+            ...currentGrocList, {id: crypto.randomUUID(), title: newGrocItem, checked: false, qty: 0, cost: 0},
         ]
         })
 
@@ -52,9 +52,25 @@ export default function App() {
             return updatedItem
           } 
           return grocItem
+          
         })
       )
     }
+
+    function handleAddQtyAndCost (grocItemId, qty, cost) {
+      
+      setGrocList((currentGrocList) =>
+        currentGrocList.map((grocItem) => {
+          if (grocItem.id === grocItemId){
+            const updatedItem = { ...grocItem, qty, cost }
+            return updatedItem
+          } 
+          return grocItem
+          
+        })
+      )
+    }
+
 
     function handleConfirmPurchase(grocList) {
       
@@ -97,7 +113,8 @@ export default function App() {
 
   return(
     <>
-      <GroceryList handleGrocSubmit={handleGrocSubmit} grocList={grocList} newGrocItem={newGrocItem} setNewGrocItem={setNewGrocItem} handleChecked={handleChecked} handleDelete={handleDelete}/>
+      <GroceryList handleGrocSubmit={handleGrocSubmit} grocList={grocList} newGrocItem={newGrocItem} setNewGrocItem={setNewGrocItem} handleChecked={handleChecked} handleDelete={handleDelete} handleAddQtyAndCost={handleAddQtyAndCost}/>
+
 
       <label>Done Shopping?</label>
       <button onClick={e => handleConfirmPurchase(grocList)}>Confirm</button>
