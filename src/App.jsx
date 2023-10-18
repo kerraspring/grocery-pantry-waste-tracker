@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { GroceryList } from "./GroceryList"
 import { PantryList } from "./PantryList"
+import { CostCalc } from "./CostCalc"
 
 export default function App() {
   const [newGrocItem, setNewGrocItem] = useState("")
@@ -9,7 +10,11 @@ export default function App() {
   const [newPantryItem, setNewPantryItem] = useState("")
   const [pantryList, setPantryList] = useState([])
 
+  const [costTotal, setCostTotal] = useState(0)
 
+  useEffect(() => {
+    console.log("costTotal:", costTotal);
+  }, [costTotal]);
 
   useEffect(() => {
     console.log("grocList:", grocList);
@@ -78,10 +83,20 @@ export default function App() {
 
       setPantryList((currentPantryList) => [...currentPantryList, ...checkedList])
           
-          const updatedGrocList = grocList.filter(grocItem => !grocItem.checked)
-          setGrocList(updatedGrocList)
+      const updatedGrocList = grocList.filter(grocItem => !grocItem.checked)
+      setGrocList(updatedGrocList)
 
-        }
+      const itemCosts = grocList.filter((grocItem) => grocItem.checked).map((grocItem) => {
+        const qty = parseInt(grocItem.qty, 10)
+        const cost = parseFloat(grocItem.cost)
+        return qty * cost
+      })
+
+      setCostTotal((currentCostTotal) => {
+        const numCurrentCostTotal = parseFloat(currentCostTotal)
+        return numCurrentCostTotal + itemCosts.reduce((prevCost, cost) => prevCost + cost, 0)
+      })
+    }
       
     
 
@@ -115,11 +130,12 @@ export default function App() {
     <>
       <GroceryList handleGrocSubmit={handleGrocSubmit} grocList={grocList} newGrocItem={newGrocItem} setNewGrocItem={setNewGrocItem} handleChecked={handleChecked} handleDelete={handleDelete} handleAddQtyAndCost={handleAddQtyAndCost}/>
 
-
       <label>Done Shopping?</label>
       <button onClick={e => handleConfirmPurchase(grocList)}>Confirm</button>
 
       <PantryList handlePantrySubmit={handlePantrySubmit} pantryList={pantryList} newPantryItem={newPantryItem} setNewPantryItem={setNewPantryItem} handleMoveToGrocList={handleMoveToGrocList} handleDelete={handleDelete}/>
+
+      <CostCalc costTotal={costTotal}/>
       
     </>
   )

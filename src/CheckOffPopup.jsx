@@ -34,6 +34,7 @@ export function CheckOffPopup({grocItemId, handleAddQtyAndCost, setSelectedGrocI
                     onChange={e => setCost(e.target.value)}
                 />
                 <button>OK</button>
+                <button>Skip</button>
             </form>
         </>
     )
