@@ -2,22 +2,28 @@ import { useState } from "react"
 
 export function CheckOffPopup({grocItemId, handleAddQtyAndCost, setSelectedGrocItem }) {
 
-
-
-    
-
     const [qty, setQty] = useState("")
     const [cost, setCost] = useState ("")
 
-    const handleSubmit= (e) => {
+    const handleDefaultSubmit = (e) => {
+        e.preventDefault()
+    }
+
+    const handleSubmit = (e) => {
         e.preventDefault()
         handleAddQtyAndCost(grocItemId, qty, cost)
         setSelectedGrocItem(false)
     }
 
+    const handleSkip = (e) => {
+        e.preventDefault()
+        handleAddQtyAndCost(grocItemId, 0, 0)
+        setSelectedGrocItem(false)
+    }
+
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleDefaultSubmit}>
                 <label>Qty</label>
                 <input
                     type="number"
@@ -33,8 +39,8 @@ export function CheckOffPopup({grocItemId, handleAddQtyAndCost, setSelectedGrocI
                     value={cost}
                     onChange={e => setCost(e.target.value)}
                 />
-                <button>OK</button>
-                <button>Skip</button>
+                <button type="submit" onClick={handleSubmit}>OK</button>
+                <button type="button"onClick={handleSkip}>Skip</button>
             </form>
         </>
     )
