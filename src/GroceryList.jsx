@@ -25,9 +25,20 @@ export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, gro
         <ul>
         {grocList.map(grocItem => {
             return <li key={grocItem.id}>
-            <label><input type="checkbox" onClick={e => {handleChecked(grocItem.id); setSelectedGrocItem(grocItem.id)}}/>{grocItem.title}</label>
-            <button onClick={() =>handleDelete(grocItem.id, "groc")}>Delete</button>
-            {selectedGrocItem === grocItem.id && (<CheckOffPopup grocItemId={grocItem.id} checked={grocItem.checked} handleAddQtyAndCost={handleAddQtyAndCost} selectedGrocItem={selectedGrocItem} setSelectedGrocItem={setSelectedGrocItem}/>)}
+            <label>
+                <input
+                    type="checkbox"
+                    onClick={e => {handleChecked(grocItem.id); setSelectedGrocItem(grocItem.id)}}
+                />{grocItem.title}
+            </label>
+            <button
+                onClick={() =>handleDelete(grocItem.id, "groc")}
+            >Delete</button>
+
+            {selectedGrocItem === grocItem.id && (<CheckOffPopup
+                grocItemId={grocItem.id}
+                checked={grocItem.checked} handleAddQtyAndCost={handleAddQtyAndCost} selectedGrocItem={selectedGrocItem} setSelectedGrocItem={setSelectedGrocItem}
+            />)}
         </li>
         })}
         

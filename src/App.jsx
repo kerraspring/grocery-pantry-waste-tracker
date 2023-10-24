@@ -12,9 +12,15 @@ export default function App() {
 
   const [costTotal, setCostTotal] = useState(0)
 
+  const [wasteTotal, setWasteTotal] = useState(0)
+
   useEffect(() => {
     console.log("costTotal:", costTotal);
   }, [costTotal]);
+
+  useEffect(() => {
+    console.log("wasteTotal:", wasteTotal);
+  }, [wasteTotal]);
 
   useEffect(() => {
     console.log("grocList:", grocList);
@@ -126,16 +132,33 @@ export default function App() {
     }
 
 
+
   return(
     <>
-      <GroceryList handleGrocSubmit={handleGrocSubmit} grocList={grocList} newGrocItem={newGrocItem} setNewGrocItem={setNewGrocItem} handleChecked={handleChecked} handleDelete={handleDelete} handleAddQtyAndCost={handleAddQtyAndCost}/>
+      <GroceryList
+        handleGrocSubmit={handleGrocSubmit}
+        grocList={grocList}
+        newGrocItem={newGrocItem}
+        setNewGrocItem={setNewGrocItem}
+        handleChecked={handleChecked}
+        handleDelete={handleDelete}
+        handleAddQtyAndCost={handleAddQtyAndCost}
+      />
 
       <label>Done Shopping?</label>
       <button onClick={e => handleConfirmPurchase(grocList)}>Confirm</button>
 
-      <PantryList handlePantrySubmit={handlePantrySubmit} pantryList={pantryList} newPantryItem={newPantryItem} setNewPantryItem={setNewPantryItem} handleMoveToGrocList={handleMoveToGrocList} handleDelete={handleDelete}/>
+      <PantryList
+        handlePantrySubmit={handlePantrySubmit}
+        pantryList={pantryList}
+        newPantryItem={newPantryItem}
+        setNewPantryItem={setNewPantryItem} handleMoveToGrocList={handleMoveToGrocList} handleDelete={handleDelete}
+        wasteTotal={wasteTotal}
+        setWasteTotal={setWasteTotal}
+        setPantryList={setPantryList}
+      />
 
-      <CostCalc costTotal={costTotal}/>
+      <CostCalc costTotal={costTotal} wasteTotal={wasteTotal}/>
       
     </>
   )
