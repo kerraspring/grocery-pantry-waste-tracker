@@ -28,7 +28,7 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
     }
 
     return (
-        <>
+        <div className="w-fit">
 
         <h1>Pantry List</h1>
 
@@ -70,6 +70,6 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
         
         </ul>
     
-        </>
+        </div>
     )
 }

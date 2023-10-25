@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CheckOffPopup } from "./CheckOffPopup";
 
-export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, grocList, handleChecked, handleDelete,handleAddQtyAndCost }) {
+export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, grocList, handleChecked, handleDelete,handleAddQtyAndCost, handleConfirmPurchase }) {
 
     useEffect(() => {
       }, [grocList]);
@@ -9,7 +9,7 @@ export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, gro
     const [selectedGrocItem, setSelectedGrocItem] = useState(null)
 
     return (
-        <>
+        <div className="w-fit">
 
         <h1>Grocery List</h1>
 
@@ -43,7 +43,10 @@ export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, gro
         })}
         
         </ul>
+
+        <label>Done Shopping?</label>
+      <button onClick={e => handleConfirmPurchase(grocList)}>Confirm</button>
     
-        </>
+        </div>
     )
 }

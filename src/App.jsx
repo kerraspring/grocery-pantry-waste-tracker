@@ -134,7 +134,7 @@ export default function App() {
 
 
   return(
-    <>
+    <div className="bg-sky-900 w-screen h-screen flex  justify-evenly text-white">
       <GroceryList
         handleGrocSubmit={handleGrocSubmit}
         grocList={grocList}
@@ -143,10 +143,10 @@ export default function App() {
         handleChecked={handleChecked}
         handleDelete={handleDelete}
         handleAddQtyAndCost={handleAddQtyAndCost}
+        handleConfirmPurchase={handleConfirmPurchase}
       />
 
-      <label>Done Shopping?</label>
-      <button onClick={e => handleConfirmPurchase(grocList)}>Confirm</button>
+      
 
       <PantryList
         handlePantrySubmit={handlePantrySubmit}
@@ -160,6 +160,6 @@ export default function App() {
 
       <CostCalc costTotal={costTotal} wasteTotal={wasteTotal}/>
       
-    </>
+    </div>
   )
 }
