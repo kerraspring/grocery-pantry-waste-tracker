@@ -5,16 +5,27 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
     
     useEffect(() => {
     }, [pantryList]);
-  
+
     const [openTrackWaste, setOpenTrackWaste] = useState(false)
 
     const [selectedPantryItem, setSelectedPantryItem] = useState(null)
 
-    function handleWasteTracking (pantryItemId) {
+    const [buttonSource, setButtonSource] = useState(null)
+
+    useEffect(() => {
+        console.log(buttonSource);
+    }, [buttonSource]);
+
+    function handleWasteTracking (pantryItemId, source) {
         setSelectedPantryItem(pantryItemId)
         setOpenTrackWaste(true)
-    }
 
+        if (source === "addToList") {
+            setButtonSource("addToList")
+        } else if (source === "delete") {
+            setButtonSource("delete")
+        }
+    }
 
     return (
         <>
@@ -35,11 +46,11 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
             return <li key={pantryItem.id}>
             <label>{pantryItem.title}</label>
             <button
-                onClick={() => handleMoveToGrocList(pantryItem.id)}
+                onClick={e => handleWasteTracking(pantryItem.id, "addToList")}
             >
             Add to List</button>
             <button
-                onClick={e => handleWasteTracking(pantryItem.id)}
+                onClick={e => handleWasteTracking(pantryItem.id, "delete")}
             >
             Delete</button>
 
@@ -50,6 +61,8 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
                 wasteTotal={wasteTotal}
                 setWasteTotal={setWasteTotal}
                 setSelectedPantryItem={setSelectedPantryItem}
+                handleMoveToGrocList={handleMoveToGrocList}
+                buttonSource={buttonSource}
             />)}
 
         </li>
