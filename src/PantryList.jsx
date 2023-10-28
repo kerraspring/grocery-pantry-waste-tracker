@@ -1,5 +1,7 @@
 import { TrackWastePopup } from "./TrackWastePopup";
 import { useEffect, useState } from "react";
+import { FiTrash2, FiCheckSquare } from "react-icons/fi";
+
 
 export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, newPantryItem, handleMoveToGrocList, handleDelete, wasteTotal, setWasteTotal }) {
     
@@ -28,31 +30,35 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
     }
 
     return (
-        <div className="w-fit">
+        <div className="w-auto h-fit border border-white px-3 py-1.5">
 
-        <h1>Pantry List</h1>
+        <h1 className="text-3xl">Pantry List</h1>
 
-        <form onSubmit={handlePantrySubmit}>
+        <form className="my-1.5 flex flex-col items-start" onSubmit={handlePantrySubmit}>
         <label>Add New Item</label>
+        <div className="flex flex-row justify-evenly items-center gap-3">
         <input
+            className="text-black bg-sky-200"
             value={newPantryItem}
             onChange={e => setNewPantryItem(e.target.value)}
             type="text" />
-        <button>Add Item</button>
+        <button className="bg-slate-900 w-fit px-5 py-1 rounded-xl my-2">Add Item</button>
+        </div>
         </form>
 
-        <ul>
+        <ul className="my-2">
         {pantryList.map(pantryItem => {
-            return <li key={pantryItem.id}>
+            return <li key={pantryItem.id} className="flex gap-2">
             <label>{pantryItem.title}</label>
             <button
+                className="text-sm"
                 onClick={e => handleWasteTracking(pantryItem.id, "addToList")}
             >
-            Add to List</button>
-            <button
+            <FiCheckSquare/></button>
+            <button className="text-sm"
                 onClick={e => handleWasteTracking(pantryItem.id, "delete")}
             >
-            Delete</button>
+            <FiTrash2/></button>
 
             {selectedPantryItem === pantryItem.id && (<TrackWastePopup
                 open={openTrackWaste}

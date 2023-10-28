@@ -134,32 +134,38 @@ export default function App() {
 
 
   return(
-    <div className="bg-sky-900 w-screen h-screen flex  justify-evenly text-white">
-      <GroceryList
-        handleGrocSubmit={handleGrocSubmit}
-        grocList={grocList}
-        newGrocItem={newGrocItem}
-        setNewGrocItem={setNewGrocItem}
-        handleChecked={handleChecked}
-        handleDelete={handleDelete}
-        handleAddQtyAndCost={handleAddQtyAndCost}
-        handleConfirmPurchase={handleConfirmPurchase}
-      />
+    <div className="bg-sky-900 w-screen h-screen text-white text-lg">
 
-      
+      <div className="w-fit">
+        <CostCalc costTotal={costTotal} wasteTotal={wasteTotal}/>
+      </div>
 
-      <PantryList
-        handlePantrySubmit={handlePantrySubmit}
-        pantryList={pantryList}
-        newPantryItem={newPantryItem}
-        setNewPantryItem={setNewPantryItem} handleMoveToGrocList={handleMoveToGrocList} handleDelete={handleDelete}
-        wasteTotal={wasteTotal}
-        setWasteTotal={setWasteTotal}
-        setPantryList={setPantryList}
-      />
+      <div className="flex justify-evenly">
+        <GroceryList
+          handleGrocSubmit={handleGrocSubmit}
+          grocList={grocList}
+          newGrocItem={newGrocItem}
+          setNewGrocItem={setNewGrocItem}
+          handleChecked={handleChecked}
+          handleDelete={handleDelete}
+          handleAddQtyAndCost={handleAddQtyAndCost}
+          handleConfirmPurchase={handleConfirmPurchase}
+        />
 
-      <CostCalc costTotal={costTotal} wasteTotal={wasteTotal}/>
-      
+        
+
+        <PantryList
+          handlePantrySubmit={handlePantrySubmit}
+          pantryList={pantryList}
+          newPantryItem={newPantryItem}
+          setNewPantryItem={setNewPantryItem} handleMoveToGrocList={handleMoveToGrocList} handleDelete={handleDelete}
+          wasteTotal={wasteTotal}
+          setWasteTotal={setWasteTotal}
+          setPantryList={setPantryList}
+        />
+
+        
+      </div>
     </div>
   )
 }
