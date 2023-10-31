@@ -43,33 +43,38 @@ export function TrackWastePopup({ open, handleDelete, pantryItem, setWasteTotal,
     }else {
 
     return (
-        <div className="flex flex-col">
-            <h4>Add to Waste Tracking?</h4>
-            <form onSubmit={handleDefaultSubmit}className="flex justify-evenly gap-2 items-center">
-                <label>Qty:</label>
+        <div className="flex flex-col bg-slate-400/25 rounded-2xl py-2">
+            <h4 className="flex justify-center">Add to Waste Tracking?</h4>
+            <form onSubmit={handleDefaultSubmit}className="flex justify-evenly gap-3 items-center flex-col p-4">
+                <div className="flex gap-2">
+                <label className="w-10">Qty:</label>
                 <input
                     className="text-black bg-sky-200 h-fit"
                     type="number"
                     min="0"
                     value={wasteQty}
                     onChange={e => setWasteQty(e.target.value)}
-                />
-                <label>Cost:</label>
-                <input
-                    className="text-black bg-sky-200 h-fit"
-                    type="number"
-                    step=".01"
-                    min="0"
-                    value={wasteCost}
-                    onChange={e => setWasteCost(e.target.value)}
-                />
-                <button className="bg-slate-900 w-fit px-4 py-1 rounded-xl my-2" 
-                type="submit"
-                onClick={e => handleWasteTrackingSubmit(e, pantryItem.id, buttonSource)} 
-                >OK</button>
-                <button className="bg-slate-900 w-fit px-5 py-1 rounded-xl my-2" 
-                onClick={e => handleSkip(e,pantryItem.id, buttonSource)}
-                type="button">Skip</button>
+                /></div>
+                <div className="flex gap-2">
+                    <label className="w-10">Cost:</label>
+                    <input
+                        className="text-black bg-sky-200 h-fit"
+                        type="number"
+                        step=".01"
+                        min="0"
+                        value={wasteCost}
+                        onChange={e => setWasteCost(e.target.value)}
+                    />
+                </div>
+                <div className="flex justify-center gap-3">
+                    <button className="bg-slate-900 w-fit px-4 py-1 rounded-xl my-2" 
+                    type="submit"
+                    onClick={e => handleWasteTrackingSubmit(e, pantryItem.id, buttonSource)} 
+                    >OK</button>
+                    <button className="bg-slate-900 w-fit px-5 py-1 rounded-xl my-2" 
+                    onClick={e => handleSkip(e,pantryItem.id, buttonSource)}
+                    type="button">Skip</button>
+                </div>
             </form>
         </div>
     )

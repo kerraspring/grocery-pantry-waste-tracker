@@ -10,7 +10,7 @@ export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, gro
     const [selectedGrocItem, setSelectedGrocItem] = useState(null)
 
     return (
-        <div className="w-auto h-fit border border-white px-3 py-1.5">
+        <div className="w-fit h-fit border border-white px-3 py-1.5">
 
         <h1 className="text-3xl">Grocery List</h1>
 
@@ -28,18 +28,18 @@ export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, gro
 
         <ul className="my-2">
         {grocList.map(grocItem => {
-            return <li key={grocItem.id} className="flex gap-2">
-            <label className="flex gap-1.5">
-                <input
-                    type="checkbox"
-                    onClick={e => {handleChecked(grocItem.id); setSelectedGrocItem(grocItem.id)}}
-                />{grocItem.title}
-            </label>
-            <button
-                className="text-sm"
-                onClick={() =>handleDelete(grocItem.id, "groc")}
-            ><FiTrash2/></button>
-
+            return <li key={grocItem.id} className="flex flex-col gap-2">
+                <label className="flex gap-1.5">
+                    <input
+                        type="checkbox"
+                        onClick={e => {handleChecked(grocItem.id); setSelectedGrocItem(grocItem.id)}}
+                    />{grocItem.title}
+                
+                <button
+                    className="text-sm"
+                    onClick={() =>handleDelete(grocItem.id, "groc")}
+                ><FiTrash2/></button>
+                </label>
     {/* icons & accessability - aria label? alt text? */}
 
             {selectedGrocItem === grocItem.id && (<CheckOffPopup

@@ -30,7 +30,7 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
     }
 
     return (
-        <div className="w-auto h-fit border border-white px-3 py-1.5">
+        <div className="w-fit h-fit border border-white px-3 py-1.5">
 
         <h1 className="text-3xl">Pantry List</h1>
 
@@ -48,17 +48,18 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
 
         <ul className="my-2">
         {pantryList.map(pantryItem => {
-            return <li key={pantryItem.id} className="flex gap-2">
-            <label>{pantryItem.title}</label>
-            <button
-                className="text-sm"
-                onClick={e => handleWasteTracking(pantryItem.id, "addToList")}
-            >
-            <FiCheckSquare/></button>
-            <button className="text-sm"
-                onClick={e => handleWasteTracking(pantryItem.id, "delete")}
-            >
-            <FiTrash2/></button>
+            return <li key={pantryItem.id} className="flex flex-col gap-2">
+            <label className="flex items-center gap-2">{pantryItem.title}
+                <button
+                    className="text-sm"
+                    onClick={e => handleWasteTracking(pantryItem.id, "addToList")}
+                >
+                <FiCheckSquare/></button>
+                <button className="text-sm"
+                    onClick={e => handleWasteTracking(pantryItem.id, "delete")}
+                >
+                <FiTrash2/></button>
+            </label>
 
             {selectedPantryItem === pantryItem.id && (<TrackWastePopup
                 open={openTrackWaste}

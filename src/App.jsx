@@ -134,13 +134,13 @@ export default function App() {
 
 
   return(
-    <div className="bg-sky-900 w-screen h-screen text-white text-lg">
+    <div className="bg-sky-900 w-screen h-screen text-white text-lg px-10">
 
-      <div className="w-fit">
+      <div className="flex justify-center py-5">
         <CostCalc costTotal={costTotal} wasteTotal={wasteTotal}/>
       </div>
 
-      <div className="flex justify-evenly">
+      <div className="flex justify-evenly gap-10">
         <GroceryList
           handleGrocSubmit={handleGrocSubmit}
           grocList={grocList}
