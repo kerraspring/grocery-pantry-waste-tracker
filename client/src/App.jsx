@@ -4,6 +4,39 @@ import { PantryList } from "./PantryList"
 import { CostCalc } from "./CostCalc"
 
 export default function App() {
+
+  const [data, setData] = useState(null)
+
+	useEffect(() => {
+    callBackendAPI()
+      .then((res) => {
+        setData({ data: res.express });
+        console.log("data:", res.express);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  
+	async function callBackendAPI() {
+		const response = await fetch("/express_backend", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: "this is your frontend speaking" }),
+    });
+		const body = await response.json();
+	
+		if (response.status !== 200) {
+		  throw Error(body.message)
+       
+		}
+		return body;
+	  };
+
+
+
+
   const [newGrocItem, setNewGrocItem] = useState("")
   const [grocList, setGrocList] = useState([])
 
