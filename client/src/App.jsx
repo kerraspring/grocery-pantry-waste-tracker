@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { GroceryList } from "./GroceryList"
 import { PantryList } from "./PantryList"
 import { CostCalc } from "./CostCalc"
+import Home from "./Home"
 
 export default function App() {
 
@@ -199,6 +200,7 @@ export default function App() {
 
         
       </div>
+      <Home/>
     </div>
   )
 }
