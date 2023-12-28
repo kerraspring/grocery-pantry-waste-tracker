@@ -49,7 +49,7 @@ export function TrackWastePopup({ open, handleDelete, pantryItem, setWasteTotal,
                 <div className="flex gap-2">
                 <label className="w-10">Qty:</label>
                 <input
-                    className="text-black bg-sky-200 h-fit"
+                    className="text-black bg-light-blue h-fit"
                     type="number"
                     min="0"
                     value={wasteQty}
@@ -58,7 +58,7 @@ export function TrackWastePopup({ open, handleDelete, pantryItem, setWasteTotal,
                 <div className="flex gap-2">
                     <label className="w-10">Cost:</label>
                     <input
-                        className="text-black bg-sky-200 h-fit"
+                        className="text-black bg-light-blue h-fit"
                         type="number"
                         step=".01"
                         min="0"
@@ -67,7 +67,7 @@ export function TrackWastePopup({ open, handleDelete, pantryItem, setWasteTotal,
                     />
                 </div>
                 <div className="flex justify-center gap-3">
-                    <button className="bg-slate-900 w-fit px-4 py-1 rounded-xl my-2" 
+                    <button className="bg-dark-blue w-fit px-4 py-1 rounded-xl my-2" 
                     type="submit"
                     onClick={e => handleWasteTrackingSubmit(e, pantryItem.id, buttonSource)} 
                     >OK</button>

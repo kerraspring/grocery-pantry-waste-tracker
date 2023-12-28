@@ -3,36 +3,47 @@ import { GroceryList } from "./GroceryList"
 import { PantryList } from "./PantryList"
 import { CostCalc } from "./CostCalc"
 
-export default function App() {
+export default function App({onLogout, handleLogoutClick, backendUri}) {
 
   const [data, setData] = useState(null)
 
 	useEffect(() => {
-    callBackendAPI()
-      .then((res) => {
-        setData({ data: res.express });
-        console.log("data:", res.express);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    const fetchData = async () => {
+        try {
+            const res = await fetchLists();
+            console.log("Server Response:", res); // Log the entire response
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    fetchData();
+}, []);
+
 
   
-	async function callBackendAPI() {
-		const response = await fetch("/express_backend", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message: "this is your frontend speaking" }),
-    });
-		const body = await response.json();
-	
-		if (response.status !== 200) {
-		  throw Error(body.message)
-       
-		}
-		return body;
-	  };
+async function fetchLists() {
+  try {
+      const res = await fetch(`${backendUri}/lists`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+              "Authorization": "Bearer SomeToken",
+              Accept: "application/json",
+          },
+      });
+
+      if (res.status === 200) {
+          return res.json();
+      } else {
+          throw new Error("Failed to fetch lists");
+      }
+  } catch (err) {
+      console.error(err);
+      throw err; 
+  }
+}
+
 
 
 
@@ -48,19 +59,19 @@ export default function App() {
   const [wasteTotal, setWasteTotal] = useState(0)
 
   useEffect(() => {
-    console.log("costTotal:", costTotal);
+    // console.log("costTotal:", costTotal);
   }, [costTotal]);
 
   useEffect(() => {
-    console.log("wasteTotal:", wasteTotal);
+    // console.log("wasteTotal:", wasteTotal);
   }, [wasteTotal]);
 
   useEffect(() => {
-    console.log("grocList:", grocList);
+    // console.log("grocList:", grocList);
   }, [grocList]);
   
   useEffect(() => {
-    console.log("pantryList;",pantryList);
+    // console.log("pantryList;",pantryList);
   }, [pantryList]);
 
 
@@ -72,6 +83,8 @@ export default function App() {
             ...currentGrocList, {id: crypto.randomUUID(), title: newGrocItem, checked: false, qty: 0, cost: 0},
         ]
         })
+
+        fetch()
 
         setNewGrocItem("")
     }
@@ -167,7 +180,10 @@ export default function App() {
 
 
   return(
-    <div className="bg-sky-900 w-screen h-screen text-white text-lg px-10">
+    <div className="bg-main-blue w-screen h-screen text-white text-lg px-10">
+      <div className="flex justify-end">
+        <button onClick={() => handleLogoutClick(onLogout)} className="button bg-dark-blue py-2 px-4 mt-2 rounded-xl">Logout</button>
+      </div>
 
       <div className="flex justify-center py-5">
         <CostCalc costTotal={costTotal} wasteTotal={wasteTotal}/>

@@ -28,8 +28,10 @@ app.use(
 );
 
 const authRoutes = require("./routes/auth");
+const listRoutes = require("./routes/lists");
 
 app.use("/auth", authRoutes);
+app.use("/lists", listRoutes);
 
 const authCheck = (req, res, next) => {
   if (!req.user) {
@@ -50,6 +52,9 @@ app.get("/auth/user", authCheck, (req, res) => {
     cookies: req.cookies,
   });
 });
+
+
+
 
 
 app.listen(process.env.PORT || 5000, () => {

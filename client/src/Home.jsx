@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
+import App from "./App";
 
 const backendUri = "http://localhost:5000";
 
@@ -22,18 +23,6 @@ function SignInDialog() {
     )
 }
 
-function Dashboard(onLogout) {
-    return (
-        <div className="bg-main-blue w-screen h-screen text-white text-lg p-10 flex justify-center items-center">
-            <div className="bg-dark-blue h-3/5 w-3/5 flex justify-center items-center flex-col shadow-xl rounded-3xl space-y-20">
-            <h1 className="text-6xl">Dashboard</h1>
-            <p className="text-2xl">Welcome to the dashboard</p>
-            
-            <a onClick={() => handleLogoutClick(onLogout)} className="button bg-main-blue text-xl py-2 px-4 rounded-xl cursor-pointer">Logout</a>
-            </div>
-        </div>
-    )
-}
 
 export default function Home() {
     const [session, setSession] = useState({
@@ -74,13 +63,18 @@ export default function Home() {
     }, []);
 
 
-    return(
+    return (
         <div>
             {session.authenticated ? (
-                <Dashboard onLogout={() => setSession({ authenticated: false, user: null })} />
+                <App
+                    onLogout={() => setSession({ authenticated: false, user: null })}
+                    handleLogoutClick={handleLogoutClick}
+                    backendUri={backendUri}
+                />
             ) : (
                 <SignInDialog />
             )}
         </div>
-    )
+    );
+    
 }

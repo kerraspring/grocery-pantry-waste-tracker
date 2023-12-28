@@ -18,11 +18,11 @@ export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, gro
             <label>Add New Item</label>
             <div className="flex flex-row justify-evenly items-center gap-3">
                 <input
-                    className="text-black bg-sky-200 h-fit"
+                    className="text-black bg-light-blue h-fit"
                     value={newGrocItem}
                     onChange={e => setNewGrocItem(e.target.value)}
                     type="text" />
-                <button className="bg-slate-900 w-fit px-5 py-1 rounded-xl my-2">Add Item</button>
+                <button className="bg-dark-blue w-fit px-5 py-1 rounded-xl my-2">Add Item</button>
             </div>
         </form>
 
@@ -52,7 +52,7 @@ export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, gro
         </ul>
 
         {/* <label>Done Shopping?</label> */}
-      <button className="bg-slate-900 w-fit px-5 py-1 rounded-xl my-2 flex items-center mx-auto" onClick={e => handleConfirmPurchase(grocList)}>Done Shopping</button>
+      <button className="bg-dark-blue w-fit px-5 py-1 rounded-xl my-2 flex items-center mx-auto" onClick={e => handleConfirmPurchase(grocList)}>Done Shopping</button>
     
         </div>
     )

@@ -38,11 +38,11 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
         <label>Add New Item</label>
         <div className="flex flex-row justify-evenly items-center gap-3">
         <input
-            className="text-black bg-sky-200"
+            className="text-black bg-light-blue"
             value={newPantryItem}
             onChange={e => setNewPantryItem(e.target.value)}
             type="text" />
-        <button className="bg-slate-900 w-fit px-5 py-1 rounded-xl my-2">Add Item</button>
+        <button className="bg-dark-blue w-fit px-5 py-1 rounded-xl my-2">Add Item</button>
         </div>
         </form>
 

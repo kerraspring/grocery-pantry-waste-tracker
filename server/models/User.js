@@ -12,6 +12,28 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    items: {
+        id: {
+            type: Number,
+            required: false,
+          },
+          title: {
+            type: String,
+            required: false,
+          },
+          listType: {
+            type: String,
+            required: false,
+          },
+          quantity: {
+            type: Number,
+            required: false,
+          },
+          cost: {
+            type: Number,
+            required: false,
+          }
+    }
 
 },
 {collection: 'users'}
