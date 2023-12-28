@@ -7,6 +7,7 @@ export default defineConfig({
     proxy: {
       "/express_backend": "http://localhost:5000/",
     },
+    port: 3000,
   },
   plugins: [react()],
 });
