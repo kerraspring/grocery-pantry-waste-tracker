@@ -11,7 +11,7 @@ export default function App({onLogout, handleLogoutClick, backendUri}) {
     const fetchData = async () => {
         try {
             const res = await fetchLists();
-            console.log("Server Response:", res); // Log the entire response
+            console.log("Server Response:", res);
         } catch (err) {
             console.log(err);
         }
@@ -28,7 +28,6 @@ async function fetchLists() {
           method: "GET",
           credentials: "include",
           headers: {
-              "Authorization": "Bearer SomeToken",
               Accept: "application/json",
           },
       });
@@ -38,6 +37,33 @@ async function fetchLists() {
       } else {
           throw new Error("Failed to fetch lists");
       }
+  } catch (err) {
+      console.error(err);
+      throw err; 
+  }
+}
+
+async function addToLists(newGrocItem) {
+  try {
+    await fetch(`${backendUri}/lists`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        item: {
+          id: newGrocItem.id,
+          title: newGrocItem.title,
+          listType: newGrocItem.listType,
+          quantity: newGrocItem.qty,
+          cost: newGrocItem.cost
+        }
+    })
+  });
+
+  
   } catch (err) {
       console.error(err);
       throw err; 
@@ -83,10 +109,16 @@ async function fetchLists() {
             ...currentGrocList, {id: crypto.randomUUID(), title: newGrocItem, checked: false, qty: 0, cost: 0},
         ]
         })
-
-        fetch()
-
         setNewGrocItem("")
+
+        if (newGrocItem) {
+          try {
+              addToLists({ id: crypto.randomUUID(), title: newGrocItem, qty: 0, cost: 0, listType: 'grocery' });
+          } catch (error) {
+              console.error("Error adding to lists:", error);
+              // Handle error as needed
+          }
+      }
     }
 
     function handlePantrySubmit(e) {
