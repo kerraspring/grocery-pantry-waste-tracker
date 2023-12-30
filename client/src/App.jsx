@@ -11,7 +11,6 @@ export default function App({onLogout, handleLogoutClick, backendUri}) {
     const fetchData = async () => {
         try {
             const res = await fetchLists();
-            console.log("Server Response:", res);
         } catch (err) {
             console.log(err);
         }
@@ -43,7 +42,7 @@ async function fetchLists() {
   }
 }
 
-async function addToLists(newGrocItem) {
+async function addToLists(item) {
   try {
     await fetch(`${backendUri}/lists`, {
       method: "POST",
@@ -54,15 +53,42 @@ async function addToLists(newGrocItem) {
       },
       body: JSON.stringify({
         item: {
-          id: newGrocItem.id,
-          title: newGrocItem.title,
-          listType: newGrocItem.listType,
-          quantity: newGrocItem.qty,
-          cost: newGrocItem.cost
+          id: item.id,
+          title: item.title,
+          listType: item.listType,
+          quantity: item.qty,
+          cost: item.cost
         }
     })
   });
 
+  
+  } catch (err) {
+      console.error(err);
+      throw err; 
+  }
+}
+
+async function updateItem(item) {
+  try {
+    await fetch(`${backendUri}/lists`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        item: {
+          id: item.id,
+          title: item.title,
+          listType: item.listType,
+          quantity: item.qty,
+          cost: item.cost
+        }
+    })
+  });
+  
   
   } catch (err) {
       console.error(err);
@@ -104,19 +130,16 @@ async function addToLists(newGrocItem) {
     function handleGrocSubmit(e) {
         e.preventDefault()
 
-        setGrocList(currentGrocList => {
-        return[
-            ...currentGrocList, {id: crypto.randomUUID(), title: newGrocItem, checked: false, qty: 0, cost: 0},
-        ]
-        })
+        const newItem = {id: crypto.randomUUID(), title: newGrocItem, checked: false, qty: 0, cost: 0, listType:'grocery'};
+
+        setGrocList(currentGrocList => [...currentGrocList, newItem])
         setNewGrocItem("")
 
         if (newGrocItem) {
           try {
-              addToLists({ id: crypto.randomUUID(), title: newGrocItem, qty: 0, cost: 0, listType: 'grocery' });
+              addToLists({ id: newItem.id, title: newGrocItem, qty: 0, cost: 0, listType: 'grocery' });
           } catch (error) {
               console.error("Error adding to lists:", error);
-              // Handle error as needed
           }
       }
     }
@@ -131,6 +154,14 @@ async function addToLists(newGrocItem) {
         })
 
         setNewPantryItem("")
+
+        if (newPantryItem) {
+          try {
+              addToLists({ id: crypto.randomUUID(), title: newPantryItem, qty: 0, cost: 0, listType: 'pantry' });
+          } catch (error) {
+              console.error("Error adding to lists:", error);
+          }
+      }
     }
 
     function handleChecked (grocItemId) {
@@ -143,15 +174,16 @@ async function addToLists(newGrocItem) {
           return grocItem
           
         })
+
       )
     }
 
     function handleAddQtyAndCost (grocItemId, qty, cost) {
-      
       setGrocList((currentGrocList) =>
         currentGrocList.map((grocItem) => {
           if (grocItem.id === grocItemId){
             const updatedItem = { ...grocItem, qty, cost }
+            updateItem(updatedItem)
             return updatedItem
           } 
           return grocItem
