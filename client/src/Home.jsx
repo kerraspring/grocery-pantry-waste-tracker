@@ -14,10 +14,10 @@ const handleLogoutClick = (onLogout) => {
 
 function SignInDialog() {
     return (
-        <div className="bg-main-blue w-screen h-screen text-white text-lg p-10 flex justify-center items-center">
-            <div className="bg-dark-blue h-3/5 w-3/5 flex justify-center items-center flex-col shadow-xl rounded-3xl space-y-20">
+        <div className="md:bg-main-blue bg-dark-blue w-screen h-screen text-white text-lg p-10 flex justify-center items-center">
+            <div className="bg-dark-blue md:h-3/5 md:w-3/5 flex justify-center items-center flex-col md:shadow-xl md:rounded-3xl md:space-y-20 space-y-40">
                 <h1 className=" text-6xl">GroceryHead</h1>
-                <a onClick={handleSignInClick} className="button bg-main-blue text-xl py-2 px-4 rounded-xl cursor-pointer">Sign in with Google</a>
+                <a onClick={handleSignInClick} className="button bg-main-blue text-2xl font-semibold py-4 px-8 md:text-xl md:py-2 md:px-4 rounded-xl cursor-pointer">Sign in with Google</a>
             </div>
         </div>
     )

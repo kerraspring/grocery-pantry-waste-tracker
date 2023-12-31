@@ -7,23 +7,51 @@ export default function App({onLogout, handleLogoutClick, backendUri}) {
 
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true);
+  const [newGrocItem, setNewGrocItem] = useState("")
+  const [grocList, setGrocList] = useState([])
+
+  const [newPantryItem, setNewPantryItem] = useState("")
+  const [pantryList, setPantryList] = useState([])
+
+  const [costTotal, setCostTotal] = useState(0)
+
+  const [wasteTotal, setWasteTotal] = useState(0)
 
 	useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetchLists();
-        setData(res.items);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!loading && data && data.length > 0) {
+      data.forEach(item => {
+        if (item.listType === 'grocery' && !grocList.some(existingItem => existingItem.id === item.id)) {
+          setGrocList(prevList => [...prevList, item]);
+        } else if (item.listType === 'pantry' && !pantryList.some(existingItem => existingItem.id === item.id)) {
+          setPantryList(prevList => [...prevList, item]);
+        }
+      });
+    } console.log(grocList, pantryList)
+  }, [data, loading]);
+  
 
+  useEffect(() => {
+    // console.log("costTotal:", costTotal);
+  }, [costTotal]);
+
+  useEffect(() => {
+    // console.log("wasteTotal:", wasteTotal);
+  }, [wasteTotal]);
+
+async function fetchData() {
+  try {
+    const res = await fetchLists();
+    setData(res.items);
+    setLoading(false);
+  } catch (err) {
+    console.log(err);
+    setLoading(false);
+  }
+}
   
 async function fetchLists() {
   try {
@@ -109,60 +137,18 @@ async function deleteItem(itemId) {
       method: "DELETE",
       credentials: "include",
       headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({itemId})
-  });
+      body: JSON.stringify({ itemId }),
+    });
 
-  
+    await fetchData();
   } catch (err) {
-      console.error(err);
-      throw err; 
+    console.error(err);
+    throw err;
   }
 }
-
-
-
-  const [newGrocItem, setNewGrocItem] = useState("")
-  const [grocList, setGrocList] = useState([])
-
-  const [newPantryItem, setNewPantryItem] = useState("")
-  const [pantryList, setPantryList] = useState([])
-
-  const [costTotal, setCostTotal] = useState(0)
-
-  const [wasteTotal, setWasteTotal] = useState(0)
-
-  useEffect(() => {
-    if (!loading && data && data.length > 0) {
-      data.forEach(item => {
-        if (item.listType === 'grocery' && !grocList.some(existingItem => existingItem.id === item.id)) {
-          setGrocList(prevList => [...prevList, item]);
-        } else if (item.listType === 'pantry' && !pantryList.some(existingItem => existingItem.id === item.id)) {
-          setPantryList(prevList => [...prevList, item]);
-        }
-      });
-    }
-  }, [data, grocList, pantryList, loading]);
-  
-
-  useEffect(() => {
-    // console.log("costTotal:", costTotal);
-  }, [costTotal]);
-
-  useEffect(() => {
-    // console.log("wasteTotal:", wasteTotal);
-  }, [wasteTotal]);
-
-  useEffect(() => {
-    // console.log("grocList:", grocList);
-  }, [grocList]);
-  
-  useEffect(() => {
-    // console.log("pantryList;",pantryList);
-  }, [pantryList]);
-
 
     function handleGrocSubmit(e) {
         e.preventDefault()
@@ -277,46 +263,57 @@ async function deleteItem(itemId) {
 
     }
 
-
+    const [listTab, setListTab] = useState('grocery')
 
   return(
-    <div className="bg-main-blue w-screen h-screen text-white text-lg px-10">
-      <div className="flex justify-end">
-        <button onClick={() => handleLogoutClick(onLogout)} className="button bg-dark-blue py-2 px-4 mt-2 rounded-xl">Logout</button>
-      </div>
+    <div className="bg-main-blue w-screen h-screen text-white text-lg flex flex-col">
+      <div className="flex flex-col h-screen md:overflow-auto">
+        <div className="flex justify-end h-fit m-2">
+          <button onClick={() => handleLogoutClick(onLogout)} className="button bg-dark-blue py-2 px-4 rounded-xl">Logout</button>
+        </div>
 
-      <div className="flex justify-center py-5">
-        <CostCalc costTotal={costTotal} wasteTotal={wasteTotal}/>
-      </div>
+        <div className="flex justify-center h-fit m-4">
+          <CostCalc costTotal={costTotal} wasteTotal={wasteTotal}/>
+        </div>
 
-      <div className="flex justify-evenly gap-10">
-        <GroceryList
-          handleGrocSubmit={handleGrocSubmit}
-          grocList={grocList}
-          newGrocItem={newGrocItem}
-          setNewGrocItem={setNewGrocItem}
-          handleChecked={handleChecked}
-          handleDelete={handleDelete}
-          handleAddQtyAndCost={handleAddQtyAndCost}
-          handleConfirmPurchase={handleConfirmPurchase}
-          data={data}
-        />
+        <div className="flex justify-evenly grow overflow-scroll md:overflow-visible">
 
-        
+        <div className={`md:flex ${listTab === 'grocery' ? 'block' : 'hidden'}`}>
+    <GroceryList
+      handleGrocSubmit={handleGrocSubmit}
+      grocList={grocList}
+      newGrocItem={newGrocItem}
+      setNewGrocItem={setNewGrocItem}
+      handleChecked={handleChecked}
+      handleDelete={handleDelete}
+      handleAddQtyAndCost={handleAddQtyAndCost}
+      handleConfirmPurchase={handleConfirmPurchase}
+      data={data}
+    />
+        </div>
 
-        <PantryList
-          handlePantrySubmit={handlePantrySubmit}
-          pantryList={pantryList}
-          newPantryItem={newPantryItem}
-          setNewPantryItem={setNewPantryItem} handleMoveToGrocList={handleMoveToGrocList} handleDelete={handleDelete}
-          wasteTotal={wasteTotal}
-          setWasteTotal={setWasteTotal}
-          setPantryList={setPantryList}
-          data={data}
-        />
+        <div className={`md:flex ${listTab === 'pantry' ? 'block' : 'hidden'}`}>
+    <PantryList
+      handlePantrySubmit={handlePantrySubmit}
+      pantryList={pantryList}
+      newPantryItem={newPantryItem}
+      setNewPantryItem={setNewPantryItem}
+      handleMoveToGrocList={handleMoveToGrocList}
+      handleDelete={handleDelete}
+      wasteTotal={wasteTotal}
+      setWasteTotal={setWasteTotal}
+      setPantryList={setPantryList}
+      data={data}
+    />
+        </div>
+        </div>
 
-        
-      </div>
+        <div className=" md:hidden grid grid-flow-col justify-around bg-dark-blue w-screen text-2xl h-16 flex-none bottom-0">
+        <button onClick={() => setListTab('grocery')}>Grocery List</button>
+        <button onClick={() => setListTab('pantry')}>Pantry List</button>
+        </div>
+</div>
+
     </div>
   )
 }

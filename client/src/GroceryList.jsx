@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CheckOffPopup } from "./CheckOffPopup";
 import { FiTrash2 } from "react-icons/fi";
 
-export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, grocList, handleChecked, handleDelete,handleAddQtyAndCost, handleConfirmPurchase, data }) {
+export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, grocList, handleChecked, handleDelete,handleAddQtyAndCost, handleConfirmPurchase}) {
 
     useEffect(() => {
       }, [grocList]);
@@ -37,7 +37,7 @@ export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, gro
                 
                 <button
                     className="text-sm"
-                    onClick={() =>handleDelete(grocItem.id, "groc")}
+                    onClick={() =>handleDelete(grocItem.id, 'groc')}
                 ><FiTrash2/></button>
                 </label>
     {/* icons & accessability - aria label? alt text? */}
