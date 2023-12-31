@@ -15,7 +15,6 @@ export function PantryList({ handlePantrySubmit, setNewPantryItem, pantryList, n
     const [buttonSource, setButtonSource] = useState(null)
 
     useEffect(() => {
-        console.log(buttonSource);
     }, [buttonSource]);
 
     function handleWasteTracking (pantryItemId, source) {

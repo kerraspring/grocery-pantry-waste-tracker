@@ -5,19 +5,23 @@ import { CostCalc } from "./CostCalc"
 
 export default function App({onLogout, handleLogoutClick, backendUri}) {
 
-  const [data, setData] = useState(null)
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
     const fetchData = async () => {
-        try {
-            const res = await fetchLists();
-        } catch (err) {
-            console.log(err);
-        }
+      try {
+        const res = await fetchLists();
+        setData(res.items);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
     };
 
     fetchData();
-}, []);
+  }, []);
 
 
   
@@ -69,8 +73,11 @@ async function addToLists(item) {
   }
 }
 
-async function updateItem(item) {
+async function updateItem(items) {
   try {
+
+    const itemList = Array.isArray(items) ? items : [items];
+
     await fetch(`${backendUri}/lists`, {
       method: "PUT",
       credentials: "include",
@@ -79,15 +86,15 @@ async function updateItem(item) {
           "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        item: {
-          id: item.id,
-          title: item.title,
-          listType: item.listType,
-          quantity: item.qty,
-          cost: item.cost
-        }
-    })
-  });
+        items: itemList.map(item => ({
+            id: item.id,
+            title: item.title,
+            listType: item.listType,
+            quantity: item.qty,
+            cost: item.cost,
+        })),
+    }),
+});
   
   
   } catch (err) {
@@ -96,7 +103,24 @@ async function updateItem(item) {
   }
 }
 
+async function deleteItem(itemId) {
+  try {
+    await fetch(`${backendUri}/lists`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({itemId})
+  });
 
+  
+  } catch (err) {
+      console.error(err);
+      throw err; 
+  }
+}
 
 
 
@@ -109,6 +133,19 @@ async function updateItem(item) {
   const [costTotal, setCostTotal] = useState(0)
 
   const [wasteTotal, setWasteTotal] = useState(0)
+
+  useEffect(() => {
+    if (!loading && data && data.length > 0) {
+      data.forEach(item => {
+        if (item.listType === 'grocery' && !grocList.some(existingItem => existingItem.id === item.id)) {
+          setGrocList(prevList => [...prevList, item]);
+        } else if (item.listType === 'pantry' && !pantryList.some(existingItem => existingItem.id === item.id)) {
+          setPantryList(prevList => [...prevList, item]);
+        }
+      });
+    }
+  }, [data, grocList, pantryList, loading]);
+  
 
   useEffect(() => {
     // console.log("costTotal:", costTotal);
@@ -147,17 +184,14 @@ async function updateItem(item) {
     function handlePantrySubmit(e) {
         e.preventDefault()
 
-        setPantryList(currentPantryList => {
-        return[
-            ...currentPantryList, {id: crypto.randomUUID(), title: newPantryItem},
-        ]
-        })
+        const newItem = {id: crypto.randomUUID(), title: newPantryItem, checked: false, qty: 0, cost: 0, listType:'pantry'};
 
+        setPantryList(currentPantryList => [...currentPantryList, newItem])
         setNewPantryItem("")
 
         if (newPantryItem) {
           try {
-              addToLists({ id: crypto.randomUUID(), title: newPantryItem, qty: 0, cost: 0, listType: 'pantry' });
+              addToLists({ id: newItem.id, title: newPantryItem, qty: 0, cost: 0, listType: 'pantry' });
           } catch (error) {
               console.error("Error adding to lists:", error);
           }
@@ -183,7 +217,6 @@ async function updateItem(item) {
         currentGrocList.map((grocItem) => {
           if (grocItem.id === grocItemId){
             const updatedItem = { ...grocItem, qty, cost }
-            updateItem(updatedItem)
             return updatedItem
           } 
           return grocItem
@@ -195,7 +228,9 @@ async function updateItem(item) {
 
     function handleConfirmPurchase(grocList) {
       
-      const checkedList = grocList.filter((grocItem) => grocItem.checked).map((grocItem) => ({...grocItem, checked: false}))
+      const checkedList = grocList.filter((grocItem) => grocItem.checked).map((grocItem) => ({...grocItem, checked: false, listType:'pantry'}))
+
+      updateItem(checkedList)
 
       setPantryList((currentPantryList) => [...currentPantryList, ...checkedList])
           
@@ -214,21 +249,21 @@ async function updateItem(item) {
       })
     }
       
-    
 
-    function handleMoveToGrocList(pantryItemId) {
-       
-      const itemsToMove = pantryList.filter((pantryItem) => pantryItem.id === pantryItemId)
+    function handleMoveToGrocList(pantryItemToMove) {
+
+      const itemsToMove = pantryList.filter((pantryItem) => pantryItem.id === pantryItemToMove.id).map((pantryItemToMove) => ({...pantryItemToMove, listType: 'grocery'}))
+
+      updateItem(itemsToMove)
 
       if (itemsToMove.length > 0) {
         setGrocList((currentGrocList) => [...currentGrocList, ...itemsToMove])
       }
 
-      const updatedPantryList = pantryList.filter(pantryItem => pantryItem.id !== pantryItemId)
+      const updatedPantryList = pantryList.filter(pantryItem => pantryItem.id !== pantryItemToMove.id)
       setPantryList(updatedPantryList)
 
     }
-
 
     function handleDelete (itemId, itemType) {
       if (itemType === "groc") {
@@ -238,6 +273,7 @@ async function updateItem(item) {
         const updatedPantryList = pantryList.filter((pantryItem) => pantryItem.id !== itemId)
         setPantryList(updatedPantryList)
       }
+      deleteItem(itemId)
 
     }
 
@@ -263,6 +299,7 @@ async function updateItem(item) {
           handleDelete={handleDelete}
           handleAddQtyAndCost={handleAddQtyAndCost}
           handleConfirmPurchase={handleConfirmPurchase}
+          data={data}
         />
 
         
@@ -275,6 +312,7 @@ async function updateItem(item) {
           wasteTotal={wasteTotal}
           setWasteTotal={setWasteTotal}
           setPantryList={setPantryList}
+          data={data}
         />
 
         

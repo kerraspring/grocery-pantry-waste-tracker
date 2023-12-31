@@ -9,7 +9,7 @@ export function TrackWastePopup({ open, handleDelete, pantryItem, setWasteTotal,
         e.preventDefault()
     }
 
-    function handleWasteTrackingSubmit(e, pantryItemId, buttonSource) {
+    function handleWasteTrackingSubmit(e, pantryItem, buttonSource) {
         e.preventDefault()
 
         const itemWasteCost = parseInt(wasteQty, 10) * parseFloat(wasteCost)
@@ -20,20 +20,20 @@ export function TrackWastePopup({ open, handleDelete, pantryItem, setWasteTotal,
         })
 
         if (buttonSource === "addToList") {
-            handleMoveToGrocList(pantryItemId)
+            handleMoveToGrocList(pantryItem)
         } else if (buttonSource === "delete") {
-            handleDelete(pantryItemId, "pantry")
+            handleDelete(pantryItem.id, "pantry")
         }
         setSelectedPantryItem(false)
     }
 
-    function handleSkip(e, pantryItemId, buttonSource) {
+    function handleSkip(e,pantryItem, buttonSource) {
         e.preventDefault()
 
         if (buttonSource === "addToList") {
-            handleMoveToGrocList(pantryItemId)
+            handleMoveToGrocList(pantryItem)
         } else if (buttonSource === "delete") {
-            handleDelete(pantryItemId, "pantry")
+            handleDelete(pantryItem.id, "pantry")
         }
         setSelectedPantryItem(false)
     }
@@ -69,10 +69,10 @@ export function TrackWastePopup({ open, handleDelete, pantryItem, setWasteTotal,
                 <div className="flex justify-center gap-3">
                     <button className="bg-dark-blue w-fit px-4 py-1 rounded-xl my-2" 
                     type="submit"
-                    onClick={e => handleWasteTrackingSubmit(e, pantryItem.id, buttonSource)} 
+                    onClick={e => handleWasteTrackingSubmit(e,pantryItem, buttonSource)} 
                     >OK</button>
                     <button className="bg-slate-900 w-fit px-5 py-1 rounded-xl my-2" 
-                    onClick={e => handleSkip(e,pantryItem.id, buttonSource)}
+                    onClick={e => handleSkip(e,pantryItem, buttonSource)}
                     type="button">Skip</button>
                 </div>
             </form>

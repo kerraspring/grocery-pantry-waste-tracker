@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CheckOffPopup } from "./CheckOffPopup";
 import { FiTrash2 } from "react-icons/fi";
 
-export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, grocList, handleChecked, handleDelete,handleAddQtyAndCost, handleConfirmPurchase }) {
+export function GroceryList({ setNewGrocItem, newGrocItem, handleGrocSubmit, grocList, handleChecked, handleDelete,handleAddQtyAndCost, handleConfirmPurchase, data }) {
 
     useEffect(() => {
       }, [grocList]);

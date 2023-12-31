@@ -56,25 +56,33 @@ module.exports = {
         try {
             if (req.user && req.user.id) {
                 const user = await User.findById(req.user.id);
-                const updatedItemInfo = req.body.item;
-                const itemId = req.body.item.id;
-                const item = user.items.find(item => item.id === itemId);
-                if (user && item && item.id == itemId) {
-
-                    item.quantity = updatedItemInfo.quantity;
-                    item.cost = updatedItemInfo.cost;
-
-                    await user.save();
-                    return res.status(200).json({ message: "Item updated successfully." });
-                
-                } else if(!item) {
-                    return res.status(404).json({message:"unable to update item"});
-                } else {
-                    // User not found
+    
+                if (!user) {
                     return res.status(404).json({ message: "User not found." });
-                } 
+                }
+    
+                const itemList = req.body.items || [req.body.item].filter(Boolean);
+    
+                if (!itemList || !Array.isArray(itemList)) {
+                    return res.status(400).json({ message: "Invalid item list provided." });
+                }
+    
+                itemList.forEach(updatedItemInfo => {
+                    const itemId = updatedItemInfo.id;
+                    const userItem = user.items.find(item => item.id === itemId);
+    
+                    if (!userItem) {
+                        return res.status(404).json({ message: `Item with ID ${itemId} not found for the user.` });
+                    }
+    
+                    userItem.quantity = updatedItemInfo.quantity;
+                    userItem.cost = updatedItemInfo.cost;
+                    userItem.listType = updatedItemInfo.listType;
+                });
+    
+                await user.save();
+                return res.status(200).json({ message: "Items updated successfully." });
             } else {
-                // User not authenticated
                 return res.status(401).json({ message: "User not authenticated." });
             }
         } catch (err) {
@@ -82,4 +90,36 @@ module.exports = {
             return res.status(500).json({ message: "Internal Server Error." });
         }
     },
+
+    deleteItem: async (req, res) => {
+        try {
+            if (req.user && req.user.id) {
+                const user = await User.findById(req.user.id);
+    
+                if (!user) {
+                    return res.status(404).json({ message: "User not found." });
+                }
+    
+                const itemId = req.body.itemId;
+                const userItemList = user.items;
+                const userItemIndex = userItemList.findIndex(item => item.id === itemId);
+    
+                if (userItemIndex !== -1) {
+                    userItemList.splice(userItemIndex, 1);
+                } else {
+                    return res.status(404).json({ message: "Item not found for the user." });
+                }
+    
+                await user.save();
+                return res.status(200).json({ message: "Item successfully deleted." });
+            } else {
+                return res.status(401).json({ message: "User not authenticated." });
+            }
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Internal Server Error." });
+        }
+    },
+    
+        
 };
