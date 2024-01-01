@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path")
 const session = require("express-session");
 const cors = require("cors");
 const passport = require("passport");
@@ -27,6 +28,9 @@ app.use(
   })
 );
 
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+
 const authRoutes = require("./routes/auth");
 const listRoutes = require("./routes/lists");
 
@@ -54,7 +58,14 @@ app.get("/auth/user", authCheck, (req, res) => {
 });
 
 
-
+app.get("*", function (_, res) {
+  res.sendFile(
+    path.join(__dirname, "../client/dist/index.html"),
+    function (err) {
+      res.status(500).send(err);
+    }
+  );
+});
 
 
 app.listen(process.env.PORT || 5000, () => {

@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import App from "./App";
 
-const backendUri = "http://localhost:5000";
 
 const handleSignInClick = () => {
-    window.open(`${backendUri}/auth/google`, "_self");
+    window.open("/auth/google", "_self");
 };
 
 const handleLogoutClick = (onLogout) => {
-    window.open(`${backendUri}/auth/logout`, "_self");
+    window.open("/auth/logout", "_self");
     onLogout();
 };
 
@@ -31,13 +30,14 @@ export default function Home() {
     });
 
     useEffect(() => {
-        fetch(`${backendUri}/auth/user`, {
+        fetch("/auth/user", {
             method: "GET",
-            credentials: "include",
-            headers: {
-                "Authorization": "Bearer SomeToken",
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": true
+    credentials: "include",
+    headers: {
+        Authorization: "Bearer SomeToken",
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
                 }
             })
             .then((res) => {
@@ -69,7 +69,6 @@ export default function Home() {
                 <App
                     onLogout={() => setSession({ authenticated: false, user: null })}
                     handleLogoutClick={handleLogoutClick}
-                    backendUri={backendUri}
                 />
             ) : (
                 <SignInDialog />

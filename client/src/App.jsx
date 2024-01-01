@@ -3,7 +3,7 @@ import { GroceryList } from "./GroceryList"
 import { PantryList } from "./PantryList"
 import { CostCalc } from "./CostCalc"
 
-export default function App({onLogout, handleLogoutClick, backendUri}) {
+export default function App({onLogout, handleLogoutClick}) {
 
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,7 @@ async function fetchData() {
   
 async function fetchLists() {
   try {
-      const res = await fetch(`${backendUri}/lists`, {
+      const res = await fetch("/lists", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -76,7 +76,7 @@ async function fetchLists() {
 
 async function addToLists(item) {
   try {
-    await fetch(`${backendUri}/lists`, {
+    await fetch("/lists", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -106,7 +106,7 @@ async function updateItem(items) {
 
     const itemList = Array.isArray(items) ? items : [items];
 
-    await fetch(`${backendUri}/lists`, {
+    await fetch("/lists", {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -133,7 +133,7 @@ async function updateItem(items) {
 
 async function deleteItem(itemId) {
   try {
-    await fetch(`${backendUri}/lists`, {
+    await fetch("/lists", {
       method: "DELETE",
       credentials: "include",
       headers: {
