@@ -120,6 +120,7 @@ async function updateItem(items) {
             listType: item.listType,
             quantity: item.qty,
             cost: item.cost,
+            timestamp: item.timestamp
         })),
     }),
 });
@@ -153,14 +154,15 @@ async function deleteItem(itemId) {
     function handleGrocSubmit(e) {
         e.preventDefault()
 
-        const newItem = {id: crypto.randomUUID(), title: newGrocItem, checked: false, qty: 0, cost: 0, listType:'grocery'};
+        const timestamp = new Date().toISOString()
+        const newItem = {id: crypto.randomUUID(), title: newGrocItem, checked: false, qty: 0, cost: 0, listType:'grocery', timestamp: timestamp};
 
         setGrocList(currentGrocList => [...currentGrocList, newItem])
         setNewGrocItem("")
 
         if (newGrocItem) {
           try {
-              addToLists({ id: newItem.id, title: newGrocItem, qty: 0, cost: 0, listType: 'grocery' });
+              addToLists({ id: newItem.id, title: newGrocItem, qty: 0, cost: 0, listType: 'grocery', timestamp: timestamp() });
           } catch (error) {
               console.error("Error adding to lists:", error);
           }
@@ -170,14 +172,15 @@ async function deleteItem(itemId) {
     function handlePantrySubmit(e) {
         e.preventDefault()
 
-        const newItem = {id: crypto.randomUUID(), title: newPantryItem, checked: false, qty: 0, cost: 0, listType:'pantry'};
+        const timestamp = new Date().toISOString()
+        const newItem = {id: crypto.randomUUID(), title: newPantryItem, checked: false, qty: 0, cost: 0, listType:'pantry', timestamp: timestamp};
 
         setPantryList(currentPantryList => [...currentPantryList, newItem])
         setNewPantryItem("")
 
         if (newPantryItem) {
           try {
-              addToLists({ id: newItem.id, title: newPantryItem, qty: 0, cost: 0, listType: 'pantry' });
+              addToLists({ id: newItem.id, title: newPantryItem, qty: 0, cost: 0, listType: 'pantry', timestamp: timestamp });
           } catch (error) {
               console.error("Error adding to lists:", error);
           }

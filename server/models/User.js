@@ -27,6 +27,9 @@ const UserSchema = new mongoose.Schema({
           },
           cost: {
             type: Number,
+          },
+          timestamp: {
+            type: String,
           }
     }]
 
