@@ -1,8 +1,7 @@
 {
   "main": "server.js",
   "scripts": {
-    "start": "npm run build-client && node server.js",
-    "build-client": "cd ../client && npm install && npm run build",
+    "start": "node server.js",
     "dev": "nodemon server.js"
   },
   "dependencies": {
