@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "start": "node server.js",
+    "start": "npm run build-client && node server.js",
+    "build-client": "cd ../client && npm install && npm run build",
     "dev": "nodemon server.js"
   },
-  
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
