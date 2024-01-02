@@ -1,10 +1,11 @@
 {
   "scripts": {
     "start": "npm-run-all --parallel start-backend start-frontend",
-    "start-backend": "node server.js",
-    "start-frontend": "cd ../client && npm run build",
+    "start-backend": "npm install && node server.js",
+    "start-frontend": "cd ../client && npm install && npm run build",
     "dev": "nodemon server.js"
   },
+  
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
