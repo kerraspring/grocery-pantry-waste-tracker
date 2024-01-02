@@ -1,8 +1,6 @@
 {
   "scripts": {
-    "start": "npm-run-all --parallel start-backend start-frontend",
-    "start-backend": "npm install && node server.js",
-    "start-frontend": "cd ../client && npm install && npm run build",
+    "start": "node server.js",
     "dev": "nodemon server.js"
   },
   
